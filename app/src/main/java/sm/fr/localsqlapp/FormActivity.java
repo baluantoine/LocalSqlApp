@@ -52,7 +52,7 @@ public class FormActivity extends AppCompatActivity {
             Log.e("SQL_EXCEPTION", ex.getMessage());
             Toast.makeText(this, "Insertion KO", Toast.LENGTH_LONG).show();
         }
-        //Pour effacre les zones de saisies lors de la validation
+        //Pour effacer les zones de saisies lorsqu'on clique sur valider
         ((EditText) findViewById(R.id.editNom)).setText("");
         ((EditText) findViewById(R.id.editPrenom)).setText("");
         ((EditText) findViewById(R.id.editMail)).setText("");
