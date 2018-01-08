@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             contactList.add(contactcols);
         }
 
-
         return contactList;
     }
 }
