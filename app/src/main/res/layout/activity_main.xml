@@ -12,6 +12,6 @@
         android:id="@+id/buttonAddContact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Formulaire"
+        android:text="New Contact"
         android:onClick="onAddContact"/>
 </LinearLayout>

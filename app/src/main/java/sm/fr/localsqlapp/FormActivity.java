@@ -19,6 +19,7 @@ public class FormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
+        // ActionBar vue qui affiche le titre de l’activité, des actions, et un menu tout à droite pour les actions supplémentaires
         ActionBar actionBar = getActionBar();
         if (actionBar != null){//actionBar different de null
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -51,7 +52,9 @@ public class FormActivity extends AppCompatActivity {
             Log.e("SQL_EXCEPTION", ex.getMessage());
             Toast.makeText(this, "Insertion KO", Toast.LENGTH_LONG).show();
         }
-       // Toast.makeText(this, "Réussi", Toast.LENGTH_LONG).show();
-
+        //Pour effacre les zones de saisies lors de la validation
+        ((EditText) findViewById(R.id.editNom)).setText("");
+        ((EditText) findViewById(R.id.editPrenom)).setText("");
+        ((EditText) findViewById(R.id.editMail)).setText("");
     }
 }
