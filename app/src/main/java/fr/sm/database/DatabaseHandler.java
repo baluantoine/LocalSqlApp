@@ -33,5 +33,3 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         this.onCreate(sqLiteDatabase); //on recrée la table
     }
 }
-
-
