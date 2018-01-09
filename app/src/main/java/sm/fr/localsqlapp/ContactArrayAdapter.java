@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public class ContactArrayAdapter extends ArrayAdapter {
     private List<Map<String, String>> data;
     private LayoutInflater inflater;
 
-    public ContactArrayAdapter(@NonNull Context context, @NonNull List <Map<String, String>> data) {
+    public ContactArrayAdapter(@NonNull Context context, @NonNull List<Map<String, String>> data) {
         super(context, 0, data);
 
         this.data = data;
@@ -46,7 +45,7 @@ public class ContactArrayAdapter extends ArrayAdapter {
         nameTextView.setText(contactData.get("name"));
 
         TextView firtNameTextView = view.findViewById(R.id.listTextViewFirstName);
-        nameTextView.setText(contactData.get("firstName"));
+        nameTextView.setText(contactData.get("first_Name"));
 
         TextView emailTextView = view.findViewById(R.id.listTextViewEmail);
         nameTextView.setText(contactData.get("email"));

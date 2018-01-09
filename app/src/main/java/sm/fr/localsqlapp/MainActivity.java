@@ -6,7 +6,9 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +17,11 @@ import java.util.Map;
 
 import fr.sm.database.DatabaseHandler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ListView contactListView;
     private List<Map<String, String>> contactList;
+    private Integer seletedIndex ;
+    private Map<String, String> selectedPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
         contactList = this.getAllContacts();
 
         //création d'u contactArrayAdapter
-        ContactArrayAdapter contactArrayAdapter = new ContactArrayAdapter(this, contactList);
+        ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this, contactList);
 
         //définition de l'adapter de notre
-        contactListView.setAdapter(contactArrayAdapter);
+        contactListView.setAdapter(contactAdapter);
+
+        //Définition d'un écouteur
+        contactListView.setOnItemClickListener(this);
     }
 
     public void onAddContact(View view) {
@@ -52,19 +59,26 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.getReadableDatabase().rawQuery("SELECT * FROM contacts", null);
 
         //Instanciation de la liste qui retourne qui recevra les données
-        List<Map<String, String>> contactList = new ArrayList();
-
+        List<Map<String, String>> contactList = new ArrayList<>();
 
         //Parcours du curseur (position dans la liste)
-        while (cursor.moveToFirst()){
+        while (cursor.moveToNext()){
             Map<String, String> contactcols = new HashMap<>();
             contactcols.put("Name", cursor.getString(0));
             contactcols.put("firstName", cursor.getString(1));
             contactcols.put("email", cursor.getString(2));
-
             contactList.add(contactcols);
         }
 
         return contactList;
+    }
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        this.seletedIndex = position;
+        this.selectedPerson = contactList.get(position);
+        Toast.makeText(this, "Ligne" + position + "cliquée ", Toast.LENGTH_SHORT).show();
     }
 }

@@ -31,9 +31,10 @@ public class FormActivity extends AppCompatActivity {
         Button clickedButton = (Button) v;
 
         //Récupération de la saisie de l'utilisateur
-        String name = ((EditText) findViewById(R.id.editNom)).getText().toString();
-        String firstName  = ((EditText) findViewById(R.id.editPrenom)).getText().toString();
-        String email  = ((EditText) findViewById(R.id.editMail)).getText().toString();
+        String name = ((EditText) findViewById(R.id.editTextNom)).getText().toString();
+        String firstName  = ((EditText) findViewById(R.id.editTextPrenom)).getText().toString();
+        String email  = ((EditText) findViewById(R.id.editTextMail)).getText().toString();
+        String isMessage = " ";
 
         //Instanciation de la connexion à la BDD
         DatabaseHandler db = new DatabaseHandler(this); //responsable de la gestion des demandes CRUD
@@ -47,14 +48,18 @@ public class FormActivity extends AppCompatActivity {
         //insertion des données
         try{
             db.getWritableDatabase().insert("contacts", null, insertValues);
-            Toast.makeText(this, "Insertion OK", Toast.LENGTH_LONG).show();
-        } catch (SQLiteException ex){
-            Log.e("SQL_EXCEPTION", ex.getMessage());
-            Toast.makeText(this, "Insertion KO", Toast.LENGTH_LONG).show();
+           isMessage = "Insertion Réussie";
         }
+
+        catch (SQLiteException ex){
+            Log.e("SQL_EXCEPTION", ex.getMessage());
+            isMessage = "Erreur insertion";
+        }
+        Toast.makeText(this, isMessage, Toast.LENGTH_LONG).show();
+
         //Pour effacer les zones de saisies lorsqu'on clique sur valider
-        ((EditText) findViewById(R.id.editNom)).setText("");
-        ((EditText) findViewById(R.id.editPrenom)).setText("");
-        ((EditText) findViewById(R.id.editMail)).setText("");
+        ((EditText) findViewById(R.id.editTextNom)).setText("");
+        ((EditText) findViewById(R.id.editTextPrenom)).setText("");
+        ((EditText) findViewById(R.id.editTextMail)).setText("");
     }
 }

@@ -2,18 +2,20 @@
 <!-- liste_simple.xml -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="sm.fr.localsqlapp.FormActivity">
 
     <TextView
-        android:id="@+id/textNom"
+        android:id="@+id/textViewNom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nom" />
 
     <EditText
-        android:id="@+id/editNom"
+        android:id="@+id/editTextNom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -21,13 +23,13 @@
         android:text="Nom" />
 
     <TextView
-        android:id="@+id/textPrenom"
+        android:id="@+id/textViewPrenom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Prenom" />
 
     <EditText
-        android:id="@+id/editPrenom"
+        android:id="@+id/editTextPrenom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -35,23 +37,33 @@
         android:text="Prenom" />
 
     <TextView
-        android:id="@+id/textMail"
+        android:id="@+id/textViewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email" />
 
     <EditText
-        android:id="@+id/editMail"
+        android:id="@+id/editTextMail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:text="Email" />
 
     <Button
+        android:id="@+id/buttonValider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Valider"
         android:onClick="onValid"/>
+
+    <ListView
+        android:id="@+id/contactListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="15dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/colorSelectedItem" />
 
 </LinearLayout>
