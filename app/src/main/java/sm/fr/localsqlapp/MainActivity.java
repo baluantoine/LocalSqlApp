@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this, FormActivity.class);
         startActivity(intent);
 
+
         Intent intent1 = new Intent(this, MainActivity.class);
 
         intent1.putExtra("id", selectedPerson.get("id"));
