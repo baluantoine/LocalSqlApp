@@ -66,9 +66,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
 
             case R.id.mainMenuOptionEdit:
+                this.editSelectedContacts();
                 break;
         }
         return true;
+    }
+
+    private void  editSelectedContacts(){
+        Intent intent = new Intent(this, FormActivity.class);
+        startActivity(intent);
+
+        Intent intent1 = new Intent(this, MainActivity.class);
+
+        intent1.putExtra("id", selectedPerson.get("id"));
+        intent1.putExtra("name", selectedPerson.get("name"));
+        intent1.putExtra("first_name", selectedPerson.get("first_name"));
+        intent1.putExtra("email", selectedPerson.get("email"));
+
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK){
+            Toast.makeText(this, "Mise à jour effetuée", Toast.LENGTH_SHORT).show();
+            //Réinitialisation de la liste
+            this.contactListInit();
+        }
     }
 
     /**
@@ -79,23 +103,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             try{
                 //Définition de la requete sql et des paralmetres
-                String sql = "DELETE FROM `contacts WHERE id = ?";
+                String sql = "DELETE FROM contacts WHERE id = ?";
                 String[] params = {this.selectedPerson.get("id")};
                 //Exécutionde la requete
                 DatabaseHandler db = new DatabaseHandler(this);
                 db.getWritableDatabase().execSQL(sql, params);
 
                 //Réinitialiser ou regenerer la liste des contacts
+                this.contactList = this.getAllContacts();
                 this.contactListInit();
-            }catch (SQLiteException ex){
+            }
+            catch (SQLiteException ex){
                 Toast.makeText(this, "Impossible de supprimer", Toast.LENGTH_LONG).show();
             }
         }else{
             Toast.makeText(this, "Vous devez selectionner un contact", Toast.LENGTH_LONG).show();
         }
+        //Toast.makeText(this, "Suppression réussie", Toast.LENGTH_LONG).show();
     }
-    //Recuperer la clef primaire dans getAllsContacts
-    //methode deleteContacts
+
 
 
     public void onAddContact(View view) {
