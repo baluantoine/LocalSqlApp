@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text=" " />
+        android:text="Nom " />
 
     <TextView
         android:id="@+id/textViewPrenom"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text=" " />
+        android:text=" Prenom" />
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text=" " />
+        android:text="Email" />
 
     <Button
         android:id="@+id/buttonValider"

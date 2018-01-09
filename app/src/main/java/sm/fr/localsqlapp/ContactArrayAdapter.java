@@ -44,11 +44,11 @@ public class ContactArrayAdapter extends ArrayAdapter {
         TextView nameTextView = view.findViewById(R.id.listTextViewName);
         nameTextView.setText(contactData.get("name"));
 
-        TextView firtNameTextView = view.findViewById(R.id.listTextViewFirstName);
-        nameTextView.setText(contactData.get("first_Name"));
+        TextView firstNameTextView = view.findViewById(R.id.listTextViewFirstName);
+        firstNameTextView.setText(contactData.get("first_Name"));
 
         TextView emailTextView = view.findViewById(R.id.listTextViewEmail);
-        nameTextView.setText(contactData.get("email"));
+        emailTextView.setText(contactData.get("email"));
 
         return view;//returner la liste
     }

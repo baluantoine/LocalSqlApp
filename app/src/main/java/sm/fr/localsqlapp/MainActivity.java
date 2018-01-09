@@ -2,17 +2,15 @@ package sm.fr.localsqlapp;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.provider.ContactsContract;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +31,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //Référence au widget listView sur le layout
         contactListView = findViewById(R.id.contactListView);
+        contactListInit();
+    }
 
+    private void contactListInit() {
         //Recuperation de la liste des contacts
         contactList = this.getAllContacts();
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //définition de l'adapter de notre
         contactListView.setAdapter(contactAdapter);
 
-        //Définition d'un écouteur
+        //Définition d'un écouteur d'evenement
         contactListView.setOnItemClickListener(this);
     }
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //
         switch (item.getItemId()){
             case R.id.mainMenuItemDelete:
+                this.deleteSelectedContacts();
                 break;
 
             case R.id.mainMenuOptionEdit:
@@ -68,6 +70,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return true;
     }
+
+    /**
+     * Suppression du contact selectionné
+     */
+    private void  deleteSelectedContacts(){
+        if (this.seletedIndex != null){
+
+            try{
+                //Définition de la requete sql et des paralmetres
+                String sql = "DELETE FROM `contacts WHERE id = ?";
+                String[] params = {this.selectedPerson.get("id")};
+                //Exécutionde la requete
+                DatabaseHandler db = new DatabaseHandler(this);
+                db.getWritableDatabase().execSQL(sql, params);
+
+                //Réinitialiser ou regenerer la liste des contacts
+                this.contactListInit();
+            }catch (SQLiteException ex){
+                Toast.makeText(this, "Impossible de supprimer", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this, "Vous devez selectionner un contact", Toast.LENGTH_LONG).show();
+        }
+    }
+    //Recuperer la clef primaire dans getAllsContacts
+    //methode deleteContacts
+
 
     public void onAddContact(View view) {
         if (view == findViewById(R.id.buttonAddContact)){ //Facultatif car la méthode onAddContact() n'a qu'un seul bouton
@@ -90,20 +119,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         while (cursor.moveToNext()){
             Map<String, String> contactcols = new HashMap<>();
             contactcols.put("Name", cursor.getString(0));
-            contactcols.put("firstName", cursor.getString(1));
+            contactcols.put("first_name", cursor.getString(1));
             contactcols.put("email", cursor.getString(2));
+            contactcols.put("id", cursor.getString(3));
+
+            //Ajout
             contactList.add(contactcols);
         }
 
         return contactList;
     }
 
-
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         this.seletedIndex = position;
         this.selectedPerson = contactList.get(position);
-        Toast.makeText(this, "Ligne" + position + "cliquée ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Ligne " + position + " cliquée ", Toast.LENGTH_SHORT).show();
     }
 }
