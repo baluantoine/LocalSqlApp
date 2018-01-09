@@ -14,4 +14,13 @@
         android:layout_height="wrap_content"
         android:text="New Contact"
         android:onClick="onAddContact"/>
+
+    <ListView
+        android:id="@+id/contactListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+
+    </ListView>
 </LinearLayout>
