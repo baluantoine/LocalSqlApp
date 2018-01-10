@@ -2,6 +2,7 @@ package sm.fr.localsqlapp;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.sm.database.ContactDAO;
 import fr.sm.database.DatabaseHandler;
+import sm.fr.localsqlapp.model.Contact;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
@@ -48,6 +51,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
+    }
+    private void  testDAO(){
+
+        try{
+            ContactDAO dao = new ContactDAO(new DatabaseHandler(this));
+            Contact contact = dao.findOneById(1);
+            if (contact.getName() == null){
+                Log.i("DAO", "Contact inconnu");
+            }
+            Log.i("DAO", contact.getName());
+        }catch(SQLiteException ex){
+            Log.i("DEBUG", ex.getMessage());
+        }
     }
 
     private void contactListInit() {
