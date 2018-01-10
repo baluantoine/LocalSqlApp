@@ -2,7 +2,6 @@ package sm.fr.localsqlapp;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,10 +25,14 @@ import sm.fr.localsqlapp.model.Contact;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private ListView contactListView;
-    private List<Map<String,String>> contactList;
+    private List<Contact> contactList;
     private Integer selectedIndex;
-    private Map<String,String> selectedPerson;
+    private Contact selectedPerson;
     private final String LIFE_CYCLE = "cycle de vie";
+    private ContactArrayAdapter contactAdapter;
+
+    private DatabaseHandler db;
+    private ContactDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         Log.i(LIFE_CYCLE,"onCreate");
 
+        //Instanciation de la connexion a la base de données
+        this.db = new DatabaseHandler(this);
+        //Instanciation du DAO pour les contacts
+        this.dao = new ContactDAO(this.db);
+
         //référence au widget ListView sur le layout
         contactListView = findViewById(R.id.contactListView);
         contactListInit();
+
 
         //Récupération des données persistées dans le Bundle
         if (savedInstanceState != null){
@@ -52,23 +61,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
-    private void  testDAO(){
 
-        try{
-            ContactDAO dao = new ContactDAO(new DatabaseHandler(this));
-            Contact contact = dao.findOneById(1);
-            if (contact.getName() == null){
-                Log.i("DAO", "Contact inconnu");
-            }
-            Log.i("DAO", contact.getName());
-        }catch(SQLiteException ex){
-            Log.i("DEBUG", ex.getMessage());
-        }
-    }
+
 
     private void contactListInit() {
         //récupération de la liste des contacts
-        contactList = this.getAllContacts();
+        contactList = this.dao.findAll();
         //Création d'un contactArrayAdapter
         ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this,contactList);
         //Définition de l'adapter de notre listView
@@ -113,10 +111,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //Création d'une intention
             Intent FormIntent = new Intent(this, FormActivity.class);
             //Passage des paramètres à l'intention
-            FormIntent.putExtra("id",selectedPerson.get("id"));
-            FormIntent.putExtra("first_name",selectedPerson.get("first_name"));
-            FormIntent.putExtra("name",selectedPerson.get("name"));
-            FormIntent.putExtra("email",selectedPerson.get("email"));
+            FormIntent.putExtra("id",String.valueOf(selectedPerson.getId()));
+            FormIntent.putExtra("first_name",selectedPerson.getFirstname());
+            FormIntent.putExtra("name",selectedPerson.getName());
+            FormIntent.putExtra("email",selectedPerson.getMail());
             //Lancement de l'activité FormActivity
             startActivityForResult(FormIntent,1);
         }
@@ -146,12 +144,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             try {
                 //Définition de la requête sql et des paramètres
                 String sql = "DELETE FROM contacts WHERE id=?";
-                String[] params = {this.selectedPerson.get("id")};
+                String[] params = {String.valueOf(this.selectedPerson.getId())};
                 //Exécution de la requëte
                 DatabaseHandler db = new DatabaseHandler(this);
                 db.getWritableDatabase().execSQL(sql, params);
                 //Réinitialisation de la liste des contacts
-                this.contactList = this.getAllContacts();
                 this.contactListInit();
             }
             catch(SQLiteException ex){
@@ -180,32 +177,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
-    //récupérer les enregistrements de la base de données contacts
-    private List<Map<String,String>> getAllContacts(){
-        //Instanciation de la connexion à la base de données
-        DatabaseHandler db = new DatabaseHandler(this);
-        //Exécute une requete de sélection
-        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT name, first_name, email,id FROM contacts", null);
-        //Instanciation de la liste qui recevra les données
-        List<Map<String,String>> contactList = new ArrayList<>();
 
-
-        //Parcourir les résultats de la requête (parcours du curseur)
-        while (cursor.moveToNext()){
-            Map<String,String> contactCols = new HashMap<>();
-            //Remplissage du tableau associatif en fonction des données du curseur
-            contactCols.put("name",cursor.getString(0));
-            contactCols.put("first_name",cursor.getString(1));
-            contactCols.put("email",cursor.getString(2));
-            contactCols.put("id",cursor.getString(3));
-
-            //Ajout du map à la liste
-            contactList.add(contactCols);
-        }
-
-
-        return contactList;
-    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -250,8 +222,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selectedIndex", this.selectedIndex);
+        if(this.selectedIndex != null){
+            outState.putInt("selectedIndex", this.selectedIndex);
+        }
+
         super.onSaveInstanceState(outState);
     }
 }
-
