@@ -1,58 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
-<!-- liste_simple.xml -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="sm.fr.localsqlapp.FormActivity">
 
     <TextView
-        android:id="@+id/textNom"
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nom" />
 
     <EditText
-        android:id="@+id/editNom"
+        android:id="@+id/editTextNom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Nom" />
+        />
 
     <TextView
-        android:id="@+id/textPrenom"
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prenom" />
+        android:text="Prénom" />
 
     <EditText
-        android:id="@+id/editPrenom"
+        android:id="@+id/editTextPrenom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Prenom" />
+        android:text="" />
 
     <TextView
-        android:id="@+id/textMail"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email" />
+        android:text="TextView" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Email" />
+        android:inputType="textEmailAddress" />
 
     <Button
+        android:id="@+id/buttonValider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Valider" />
-
+        android:text="Valider"
+        android:onClick="onValid"/>
 </LinearLayout>
