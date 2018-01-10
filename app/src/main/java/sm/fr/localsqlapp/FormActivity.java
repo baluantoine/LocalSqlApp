@@ -61,6 +61,7 @@ public class FormActivity extends AppCompatActivity {
 
         //Instanciation de la connexion à la base de données
         DatabaseHandler db = new DatabaseHandler(this);//responsable de la gestion des demandes CRUD
+
         //définition des données à insérer
         ContentValues insertValues = new ContentValues();
         insertValues.put("first_name",firstName);
@@ -88,11 +89,10 @@ public class FormActivity extends AppCompatActivity {
             isMessage = "Erreur insertion";
         }
         Toast.makeText(this, isMessage, Toast.LENGTH_LONG).show();
+
         //on efface les zones de saisies
         ((EditText) findViewById(R.id.editTextNom)).setText("");
         ((EditText) findViewById(R.id.editTextPrenom)).setText("");
         ((EditText) findViewById(R.id.editTextEmail)).setText("");
     }
-
-
 }

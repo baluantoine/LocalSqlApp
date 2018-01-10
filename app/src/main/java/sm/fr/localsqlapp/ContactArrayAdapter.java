@@ -15,6 +15,7 @@ import java.util.Map;
 
 
 public class ContactArrayAdapter extends ArrayAdapter {
+
     //Déclaration des variables
     private Activity context;
     private List<Map<String,String>> data;
@@ -24,6 +25,7 @@ public class ContactArrayAdapter extends ArrayAdapter {
     public ContactArrayAdapter(@NonNull Context context,
                                @NonNull List<Map<String,String>> data) {
         super(context, 0, data);
+
         //Instanciation des variables
         this.data= data;
         this.context = (Activity) context;

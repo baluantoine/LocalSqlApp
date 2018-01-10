@@ -18,14 +18,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //Création de la table
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) { //Crée la table
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CONTACT_TABLE_SQL);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS contacts");//supprime la table si elle existe
-        this.onCreate(sqLiteDatabase); //on recrée la table
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1){
+        //suppression de la table si elle existe
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS contacts");
+
+        //on recrée la table
+        this.onCreate(sqLiteDatabase);
     }
 }
