@@ -1,5 +1,6 @@
 package fr.sm.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 import sm.fr.localsqlapp.model.Contact;
 
-public class ContactDAO {
+public class ContactDAO implements DAOInterface <Contact>{
 
     private DatabaseHandler db;
 
@@ -21,6 +22,7 @@ public class ContactDAO {
      * @param id
      * @return
      */
+    @Override
     public Contact findOneById(int id) throws SQLiteException{
         //Exécution de la requête
         String[] params = {String.valueOf(id)};
@@ -53,6 +55,7 @@ public class ContactDAO {
      *
      * @return
      */
+    @Override
     public List<Contact> findAll() throws SQLiteException{
         //Instanciation de la liste des contacts
         List<Contact> contactList = new ArrayList<>();
@@ -69,6 +72,46 @@ public class ContactDAO {
         cursor.close();
 
         return contactList;
+    }
+
+    //Suppression d'un contact en fonction de sa clé primaire
+    @Override
+    public void deleteOneById(Long id) throws SQLiteException {
+        String[] params = {id.toString()};
+        String sql = "DELE FROM contacts WHERE id=?";
+        this.db.getWritableDatabase().execSQL(sql, params);
+    }
+
+    @Override
+    public void persist(Contact entity){
+        if(entity.getId() == null){
+            this.insert(entity);
+        }
+        else{
+            this.update(entity);
+        }
+    }
+
+    private ContentValues getContentValuesFromEntity(Contact entity){
+        ContentValues values = new ContentValues();
+        values.put("name", entity.getName());
+        values.put("first_name", entity.getFirstname());
+        values.put("email", entity.getMail());
+
+        return values;
+    }
+
+    private void insert(Contact entity){
+        //Insérer l'objet entity
+        Long id = this.db.getWritableDatabase().insert("contacts", null, this.getContentValuesFromEntity(entity));
+
+        //Hydrater l'objet entity
+        entity.setId(id);
+    }
+
+    private void update(Contact entity){
+        String[] params = {entity.getId().toString()};
+        this.db.getWritableDatabase().update("contacts", this.getContentValuesFromEntity(entity),"id=?", params);
     }
 }
 

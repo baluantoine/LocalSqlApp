@@ -142,12 +142,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (selectedIndex != null){
 
             try {
-                //Définition de la requête sql et des paramètres
-                String sql = "DELETE FROM contacts WHERE id=?";
-                String[] params = {String.valueOf(this.selectedPerson.getId())};
-                //Exécution de la requëte
-                DatabaseHandler db = new DatabaseHandler(this);
-                db.getWritableDatabase().execSQL(sql, params);
+                Long id = this.selectedPerson.getId();
+                //Appel de la méthode deleteOneById pour supprimer un contact de la DAO
+                this.dao.deleteOneById(Long.valueOf(id));
+
                 //Réinitialisation de la liste des contacts
                 this.contactListInit();
             }
@@ -177,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

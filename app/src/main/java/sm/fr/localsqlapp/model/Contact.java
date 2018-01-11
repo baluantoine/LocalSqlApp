@@ -8,7 +8,7 @@ public class Contact {
     private String name;
     private String firstname;
     private String mail;
-    private long id;
+    private Long id;
 
     public Contact() {
 
@@ -47,11 +47,11 @@ public class Contact {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Contact setId(long id) {
+    public Contact setId(Long id) {
         this.id = id;
         return this;
     }
